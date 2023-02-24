@@ -1,0 +1,213 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "branchPrefix": "renovate-",
+  "extends": [
+    "config:base",
+    "docker:enableMajor",
+    "regexManagers:dockerfileVersions",
+    "schedule:weekly",
+    ":maintainLockFilesWeekly",
+    ":label(renovate)",
+    ":separateMajorReleases",
+    "group:allNonMajor",
+    ":preserveSemverRanges"
+  ],
+  "npmrc": "registry=https://artifactory.cambiahealth.com/artifactory/api/npm/npm/\nalways-auth=true",
+  "python": {
+    "registryUrls": ["https://artifactory.cambiahealth.com/artifactory/api/pypi/pypi/simple"]
+  },
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "clojure",
+        "maven"
+      ],
+      "registryUrls": [
+        "https://artifactory.cambiahealth.com/artifactory/libs",
+        "https://artifactory.cambiahealth.com/artifactory/libs-release",
+        "https://artifactory.cambiahealth.com/artifactory/libs-snapshot",
+        "https://artifactory.cambiahealth.com/artifactory/plugins-release",
+        "https://artifactory.cambiahealth.com/artifactory/plugins-snapshot"
+      ]
+    },
+    {
+      "managers": ["ansible","docker-compose", "dockerfile", "droneci", "kubernetes", "woodpecker"],
+      "pinDigests": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ],
+  "docker":{
+    "packageRules": [
+      {
+        "managers": ["ansible", "docker-compose", "dockerfile", "droneci", "gitlabci", "kubernetes", "regex"],
+        "groupName": "container images",
+        "groupSlug": "container-images",
+        "recreateClosed": true
+      },
+      {
+        "matchPackageNames": ["postgres"],
+        "allowedVersions": "<15.0.0"
+      },
+      {
+        "matchPackageNames": ["redis"],
+        "allowedVersions": "<7.0.0"
+      },
+      {
+        "matchPackageNames": ["elasticsearch"],
+        "allowedVersions": "<8.0.0"
+      },
+      {
+        "matchPackagePrefixes": ["git.cambiahealth.com:4567/"],
+        "enabled": false
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-common-node"],
+        "replacementName": "artifactory.cambiahealth.com/docker/node",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/node"],
+        "matchCurrentVersion": "/^12/",
+        "replacementName": "artifactory.cambiahealth.com/docker/node",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/node"],
+        "matchCurrentVersion": "/^14/",
+        "replacementName": "artifactory.cambiahealth.com/docker/node",
+        "replacementVersion": "14-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/node"],
+        "matchCurrentVersion": "/^16/",
+        "replacementName": "artifactory.cambiahealth.com/docker/node",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/openjdk"],
+        "matchCurrentVersion": "/^8/",
+        "replacementName": "artifactory.cambiahealth.com/docker/eclipse-temurin",
+        "replacementVersion": "8u352-b08-jdk"
+      },
+      {
+        "matchPackageNames": ["openjdk"],
+        "matchCurrentVersion": "/^8/",
+        "replacementName": "eclipse-temurin",
+        "replacementVersion": "8u352-b08-jdk"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/openjdk"],
+        "matchCurrentVersion": "/^11/",
+        "replacementName": "artifactory.cambiahealth.com/docker/eclipse-temurin",
+        "replacementVersion": "11-jdk-jammy"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/openjdk"],
+        "matchCurrentVersion": "/^17/",
+        "replacementName": "artifactory.cambiahealth.com/docker/eclipse-temurin",
+        "replacementVersion": "17-jdk-jammy"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-maven-jobrunner"],
+        "matchCurrentValue": "/^3.6-openjdk8-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-java-jobrunner",
+        "replacementVersion": "8-jdk-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-maven-jobrunner"],
+        "matchCurrentValue": "/^3.6-openjdk11-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-java-jobrunner",
+        "replacementVersion": "11-jdk-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-maven-jobrunner"],
+        "matchCurrentValue": "/^3.6-openjdk16-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-java-jobrunner",
+        "replacementVersion": "17-jdk-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner"],
+        "matchCurrentValue": "/^12-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner"],
+        "matchCurrentValue": "/^14-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner"],
+        "matchCurrentValue": "/^16-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-nodejs-jobrunner",
+        "replacementVersion": "16-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-python-jobrunner"],
+        "matchCurrentValue": "/^3.9-buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-python-jobrunner",
+        "replacementVersion": "3.11-bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-docker-jobrunner-buster"],
+        "matchCurrentValue": "/^buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/chp-build-docker-jobrunner-buster",
+        "replacementVersion": "bullseye"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-docker"],
+        "matchCurrentVersion": "/^19/",
+        "replacementName": "artifactory.cambiahealth.com/docker/docker",
+        "replacementVersion": "20-dind"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-build-docker"],
+        "matchCurrentVersion": "/^20/",
+        "replacementName": "artifactory.cambiahealth.com/docker/docker",
+        "replacementVersion": "20-dind"
+      },
+      {
+        "matchPackageNames": ["artifactory.cambiahealth.com/docker/chp-common-debian"],
+        "versioning": "debian",
+        "matchCurrentValue": "/^buster/",
+        "replacementName": "artifactory.cambiahealth.com/docker/debian",
+        "replacementVersion": "bullseye"
+      }
+    ]
+  },
+  "golang":{
+    "postUpdateOptions": [
+      "gomodTidy"
+    ]
+  },
+  "npm": {
+    "extends": [
+      ":unpublishSafe"
+    ],
+    "rangeStrategy": "bump",
+    "packageRules": [
+      {
+        "groupName": "ESLint and Prettier",
+        "packageNames": ["eslint", "prettier"],
+        "packagePatterns": ["^eslint-config-", "^eslint-plugin-"]
+      },
+      {
+        "description": "engines and npm updates go with container images",
+        "depTypeList": ["engines"],
+        "groupName": "container images",
+        "groupSlug": "container-images",
+        "recreateClosed": true
+      }
+    ]
+  },
+  "pip_requirements": {
+    "fileMatch": ["(^|/)([\\w-]*)requirements\\.(txt|pip)$", "(^|/)([\\w-]*)requirements-.+\\.(txt|pip)$"]
+  },
+  "circleci": {
+    "fileMatch": ["(^|/).circleci/config.yml$"]
+  }
+}
