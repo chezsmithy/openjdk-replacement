@@ -1,0 +1,3 @@
+FROM artifactory.cambiahealth.com/docker/openjdk:8-jdk-buster
+
+# TESTING Replacements
