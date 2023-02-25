@@ -1,1 +1,1 @@
-FROM quay.io/calico/node:v3.8.2
+FROM quay.io/calico/node:v3.25.0@sha256:a85123d1882832af6c45b5e289c6bb99820646cb7d4f6006f98095168808b1e6
